@@ -3,7 +3,10 @@ import { View, Text, ScrollView } from 'react-native'
 import {Avatar,Button} from 'react-native-paper';
 import { TouchableOpacity} from 'react-native';
 import { colors, defaultStyle } from '../styles/styles'
+
 import Header from '../components/Header'
+import SearchModal from '../components/SearchModal';
+import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
 
@@ -16,13 +19,43 @@ const Home = () => {
     {category:"Nice6", _id: "sdnjskad6"},
     {category:"Nice7", _id: "sdnjskad7"}
   ];
+
+  const products = [
+    {
+      price:256863,
+      name: "Chairs",
+      _id:"saderiuplkjd",
+      images:[
+          {
+            url : "https://img.freepik.com/free-vector/home-furniture-set_74855-15461.jpg",
+           url:"https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?cs=srgb&dl=pexels-martin-p%C3%A9chy-1866149.jpg&fm=jpg"
+          }
+      ]
+    },
+    
+  ];
+
+  const navigate = useNavigation();
   const [category, setCategory] = useState("");
+  const [activeSearch, setActiveSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const categoryButtonHandler = (id) => {
     setCategory(id);
   };
 
   return (
+
+    <>
+
+   {activeSearch && (
+        <SearchModal
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          setActiveSearch={setActiveSearch}
+          products={products}
+        />
+      )}
    
      <View style={defaultStyle}>
       <Header/>
@@ -41,7 +74,7 @@ const Home = () => {
       {/*search bar*/}
 
     <View>
-      <TouchableOpacity style={{ paddingTop:10 }}>
+      <TouchableOpacity onPress={() => setActiveSearch((prev) => !prev)} style={{ paddingTop:10 }}>
         <Avatar.Icon
           icon={"magnify"}
           size={50}
@@ -94,7 +127,7 @@ const Home = () => {
      </View>
     
      </View>
-  
+  </>
   )
 }
 
