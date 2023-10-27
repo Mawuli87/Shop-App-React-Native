@@ -7,8 +7,12 @@ import { colors, defaultStyle } from '../styles/styles'
 import Header from '../components/Header'
 import SearchModal from '../components/SearchModal';
 import { useNavigation } from '@react-navigation/native';
+import ProductCard from '../components/ProductCard';
+import Footer from '../components/Footer';
 
 const Home = () => {
+
+  const navigate = useNavigation();
 
   const categories = [
     {category:"Nice", _id: "sdnjskad"},
@@ -22,8 +26,9 @@ const Home = () => {
 
   const products = [
     {
-      price:256863,
+      stock: 23,
       name: "Chairs",
+      price:256863,
       _id:"saderiuplkjd",
       images:[
           {
@@ -32,10 +37,24 @@ const Home = () => {
           }
       ]
     },
+
+    {
+      stock: 24,
+      name: "Sofa chair",
+      price:2568,
+      _id:"saderiuplkokpyh",
+      images:[
+          {
+            
+           url:"https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?cs=srgb&dl=pexels-martin-p%C3%A9chy-1866149.jpg&fm=jpg",
+           url : "https://img.freepik.com/free-vector/home-furniture-set_74855-15461.jpg"
+          }
+      ]
+    },
     
   ];
 
-  const navigate = useNavigation();
+
   const [category, setCategory] = useState("");
   const [activeSearch, setActiveSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -43,6 +62,10 @@ const Home = () => {
   const categoryButtonHandler = (id) => {
     setCategory(id);
   };
+
+  const addToCardHandler = (id, name, price, image, stock) => {
+    console.log("add to cart",id)
+  }
 
   return (
 
@@ -121,12 +144,31 @@ const Home = () => {
             
           }
         </ScrollView>
-       
-
-
      </View>
-    
+ {/* Products */}
+
+     <View style={{ flex: 1 }}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {products.map((item, index) => (
+              <ProductCard
+                stock={item.stock}
+                name={item.name}
+                price={item.price}
+                image={item.images[0]?.url}
+                addToCardHandler={addToCardHandler}
+                id={item._id}
+                key={item._id}
+                i={index}
+                navigate={navigate}
+              />
+            ))}
+          </ScrollView>
+        </View>
      </View>
+
+   {/** footer */}
+   <Footer/>
+
   </>
   )
 }
